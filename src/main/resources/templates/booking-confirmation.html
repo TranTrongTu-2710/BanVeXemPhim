@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vé Điện Tử</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { background-color: #d9534f; color: #ffffff; padding: 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 20px; }
+        .info-group { margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
+        .info-group:last-child { border-bottom: none; }
+        .label { color: #777; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
+        .value { color: #333; font-size: 16px; font-weight: bold; margin: 0; }
+        .qr-section { text-align: center; background-color: #f9f9f9; padding: 20px; border-top: 1px solid #eee; }
+        .qr-section img { width: 200px; height: 200px; border: 5px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .footer { background-color: #333; color: #999; text-align: center; padding: 15px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>VÉ ĐIỆN TỬ</h1>
+            <p>Cảm ơn bạn đã đặt vé!</p>
+        </div>
+
+        <div class="content">
+            <div class="info-group">
+                <span class="label">Phim</span>
+                <p class="value" th:text="${booking.showtime.movie.title}">Lật Mặt 7</p>
+            </div>
+
+            <div class="info-group" style="display: flex; justify-content: space-between;">
+                <div style="width: 48%;">
+                    <span class="label">Ngày Chiếu</span>
+                    <p class="value" th:text="${#temporals.format(booking.showtime.showDate, 'dd/MM/yyyy')}">01/05/2024</p>
+                </div>
+                <div style="width: 48%;">
+                    <span class="label">Giờ Chiếu</span>
+                    <p class="value" th:text="${#temporals.format(booking.showtime.startTime, 'HH:mm')}">20:00</p>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Rạp & Phòng Chiếu</span>
+                <p class="value">
+                    <span th:text="${booking.showtime.screen.cinema.name}">Cinema A</span> -
+                    <span th:text="${booking.showtime.screen.name}">Screen 01</span>
+                </p>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Ghế</span>
+                <p class="value" th:text="${seatNames}">H5, H6</p>
+            </div>
+
+            <div class="info-group" th:if="${foodList != 'Không có'}">
+                <span class="label">Đồ Ăn & Nước Uống</span>
+                <p class="value" th:text="${foodList}">Bắp x1, Coca x2</p>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Mã Đặt Vé</span>
+                <p class="value" style="color: #d9534f; font-size: 20px;" th:text="${booking.bookingCode}">ABC123XYZ</p>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Tổng Thanh Toán</span>
+                <p class="value" th:text="${#numbers.formatDecimal(booking.finalAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'">150,000 đ</p>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <p style="margin-bottom: 10px; color: #555;">Quét mã này tại quầy soát vé</p>
+            <img th:src="|cid:${qrCodeCid}|" alt="Mã QR Vé" />
+        </div>
+
+        <div class="footer">
+            <p>Vui lòng đến trước giờ chiếu 15 phút.</p>
+            <p>&copy; 2024 Cinema App. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
